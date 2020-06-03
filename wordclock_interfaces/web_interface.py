@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-import thread
+import _thread as thread
 from flask_restplus import Api, Resource, fields
 import wordclock_tools.wordclock_colors as wcc
 
@@ -137,9 +137,9 @@ class Color(Resource):
         default_plugin = web_interface.app.wclk.plugins[web_interface.app.wclk.default_plugin]
 
         if web_interface.app.wclk.developer_mode_active:
-            channel_wise = lambda(x): {'red': x.r, 'green': x.g, 'blue': x.b}
+            channel_wise = lambda x: {'red': x.r, 'green': x.g, 'blue': x.b}
         else:
-            channel_wise = lambda(x): {'blue': x & 255, 'green': (x >> 8) & 255, 'red': (x >> 16) & 255}
+            channel_wise = lambda x: {'blue': x & 255, 'green': (x >> 8) & 255, 'red': (x >> 16) & 255}
 
         return {
             'background': channel_wise(default_plugin.bg_color),

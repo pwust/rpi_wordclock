@@ -68,7 +68,8 @@ def create_svg(lang, config, side='front', mode='stencil'):
     print('  Wca width ....: ' + str(wca_width) + 'mm')
     row_num = len(content)
     print('  Wca rows .....: ' + str(row_num))
-    col_num = len(content[0].decode('utf-8'))
+    # py2: col_num = len(content[0].decode('utf-8'))
+    col_num = len(content[0])
     print('  Wca columns ..: ' + str(col_num))
     minute_margin = float(config.get('stencil_parameter', 'minute_margin'))
     minute_diameter = float(config.get('stencil_parameter', 'minute_diameter'))
@@ -152,12 +153,15 @@ def create_svg(lang, config, side='front', mode='stencil'):
             coords = get_letter_coords(wca_top_left, x, x_spacing, y, y_spacing, side, col_num)
             if mode == 'stencil':
                 # Write only characters
-                text_layout.add(layout.text((content[y].decode('utf-8')[x]),
+                # py2: text_layout.add(layout.text((content[y].decode('utf-8')[x]),
+                # py2:                             insert=(coords[0], coords[1] + float(font_size) / 2.0)))
+                text_layout.add(layout.text((content[y][x]),
                                             insert=(coords[0], coords[1] + float(font_size) / 2.0)))
             else:
                 # Write characters (top left)
                 coords_tl = coords[0] - x_sub_spacing, coords[1] - y_sub_spacing
-                text_layout.add(layout.text((content[y].decode('utf-8')[x]), insert=coords_tl))
+                # py2: text_layout.add(layout.text((content[y].decode('utf-8')[x]), insert=coords_tl))
+                text_layout.add(layout.text((content[y][x]), insert=coords_tl))
 
                 # Write 1D coordinate (top right)
                 coords_tr = coords[0] + x_sub_spacing, coords[1] - y_sub_spacing

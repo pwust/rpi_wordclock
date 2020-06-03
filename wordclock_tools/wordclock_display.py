@@ -1,11 +1,12 @@
-import ConfigParser
+import configparser as ConfigParser
 import fontdemo
 import os
 from PIL import Image
-import wiring
+import wordclock_tools.wiring as wiring
 import wordclock_plugins.time_default.time_english as time_english
 import wordclock_plugins.time_default.time_german as time_german
 import wordclock_plugins.time_default.time_german2 as time_german2
+import wordclock_plugins.time_default.time_german3 as time_german3
 import wordclock_plugins.time_default.time_dutch as time_dutch
 import wordclock_plugins.time_default.time_swabian as time_swabian
 import wordclock_plugins.time_default.time_swabian2 as time_swabian2
@@ -31,9 +32,14 @@ class wordclock_display:
         self.config = config
         self.base_path = config.get('wordclock', 'base_path')
         max_brightness = 255
+        self.brightness = 10
 
         try:
-            self.setBrightness(config.getint('wordclock_display', 'brightness'))
+            #myBrightness = config.get('wordclock_display', 'brightness')
+            #self.setBrightness(config.getint('wordclock_display', 'brightness'))
+            #self.setBrightness(int(myBrightness))
+            self.brightness = config.getint('wordclock_display', 'brightness')
+
         except:
             self.brightness = max_brightness
             print(
@@ -91,6 +97,8 @@ class wordclock_display:
             self.taw = time_swiss_german.time_swiss_german()
         elif language == 'swiss_german2':
             self.taw = time_swiss_german2.time_swiss_german2()
+        elif language == 'german3':
+            self.taw = time_german3.time_german3()
         else:
             print('Could not detect language: ' + language + '.')
             print('Choosing default: german')
@@ -277,8 +285,11 @@ class wordclock_display:
 
     def setMinutes(self, time, color):
         if time.minute % 5 != 0:
+            # print('minutes # ', end='')
             for i in range(1, time.minute % 5 + 1):
+                # print(i, end=' ')
                 self.setPixelColor(self.wcl.mapMinutes(i), color)
+            # print()
 
     def show(self):
         """

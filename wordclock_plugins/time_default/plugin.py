@@ -1,15 +1,16 @@
 import datetime
 import os
 import time
-import time_english
-import time_german
-import time_german2
-import time_swabian
-import time_swabian2
-import time_dutch
-import time_bavarian
-import time_swiss_german
-import time_swiss_german2
+import wordclock_plugins.time_default.time_english
+import wordclock_plugins.time_default.time_german
+import wordclock_plugins.time_default.time_german2
+import wordclock_plugins.time_default.time_german3
+import wordclock_plugins.time_default.time_swabian
+import wordclock_plugins.time_default.time_swabian2
+import wordclock_plugins.time_default.time_dutch
+import wordclock_plugins.time_default.time_bavarian
+import wordclock_plugins.time_default.time_swiss_german
+import wordclock_plugins.time_default.time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
 
 
@@ -45,7 +46,7 @@ class plugin:
             print('  No typewriter_speed set for default plugin within the config-file. Defaulting to ' + str(
                 self.typewriter_speed) + '.')
 
-	try:
+        try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
         except:
             print('  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
@@ -127,7 +128,7 @@ class plugin:
             # Check if this is the predefined sleep time (muted brightness) as defined in wordclock_config.cfg
             nowtime = datetime.time(now.hour,now.minute,0)
             if not (self.sleep_begin == self.sleep_end):
-                if ((self.sleep_begin <= nowtime) and ((nowtime <= self.sleep_end) or (nowtime <= datetime.time(23,59,59))) or (datetime.time(0,0,0) <= nowtime <= self.sleep_end)):  # skip if color/brightness change has been done during the current sleep cycle
+                if (self.sleep_begin <= nowtime) and ((nowtime <= self.sleep_end) or (nowtime <= datetime.time(23, 59, 59))) or (datetime.time(0, 0, 0) <= nowtime <= self.sleep_end):  # skip if color/brightness change has been done during the current sleep cycle
                     if not self.skip_sleep: 
                         self.brightness_mode_pos = self.sleep_brightness
                         self.sleep_switch = True  # brightness has been changed
@@ -175,6 +176,10 @@ class plugin:
         wcd.setColorToAll(self.bg_color, includeMinutes=True)
         # Returns indices, which represent the current time, when being illuminated
         taw_indices = wcd.taw.get_time(now, self.purist)
+        # print('---')
+        # print('Now = ',now)
+        # print('taw index = (', len(taw_indices), ') ', taw_indices, sep='')
+
         if self.typewriter and now.minute % 5 == 0:
             for i in range(len(taw_indices)):
                 wcd.setColorBy1DCoordinates(wcd.strip, taw_indices[0:i + 1], self.word_color)

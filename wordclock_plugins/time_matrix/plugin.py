@@ -24,9 +24,9 @@ class plugin:
         self.pretty_name = "Matrix with time"
         self.description = "There is no spoon?"
 
-	    try:
+        try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
-        except Exception as e:
+        except Exception:
             print('  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
             self.purist = False
 
@@ -68,8 +68,8 @@ class plugin:
                         rain[x] = 0
                 else:
                     # simple alpha blending using our predefined colors
-                    y0 = max(y - 10, 0)
-                    y1 = min(9, y)
+                    y0 = max(y - 11, 0)
+                    y1 = min(10, y)
                     ci = y0 - (y - 10)
                     for yi, yn in enumerate(range(y0, y1 + 1)):
                         color = self.colors[ci + yi]

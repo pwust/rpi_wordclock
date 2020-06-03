@@ -1,4 +1,4 @@
-import ConfigParser
+import configparser as ConfigParser
 from importlib import import_module
 import netifaces
 import inspect
@@ -60,7 +60,21 @@ class wordclock:
         plugin_dir = os.path.join(self.basePath, 'wordclock_plugins')
 
         # Assemble list of all available plugins
-        plugins = (plugin for plugin in os.listdir(plugin_dir) if os.path.isdir(os.path.join(plugin_dir, plugin)))
+        pluginstemp = (plugin for plugin in os.listdir(plugin_dir) if os.path.isdir(os.path.join(plugin_dir, plugin)))
+
+        #print('--- before cleaning ---')
+        #print(pluginstemp)
+
+        plugins = []
+
+        for plugin in pluginstemp:
+            if not(plugin.startswith('_')):
+                plugins.append(plugin)
+
+        pluginstemp = None
+
+        #print('-- after cleaning ---')
+        #print(plugins)
 
         # Import plugins, which can be operated by the wordclock:
         index = 0  # A helper variable (only incremented on successful import)
@@ -71,23 +85,34 @@ class wordclock:
                 if not self.config.getboolean('plugin_' + plugin, 'activate'):
                     print('Skipping plugin ' + plugin + ' since it is set to activate=false in the config-file.')
                     continue
-            except:
-                print('  INFO: No activate-flag set for plugin ' + plugin + ' within the config-file. Will be imported.')
+                else:
+                    print('Plugin ' + plugin + ' is set to ACTIVE in config file.')
+            except (ValueError, KeyError, NameError):
+                print(
+                    '  INFO: No activate-flag set for plugin ' + plugin + ' within the config-file. Will be imported.')
 
             try:
                 # Perform a minimal (!) validity check
                 # Check, if plugin is valid (if the plugin.py is provided)
                 if not os.path.isfile(os.path.join(plugin_dir, plugin, 'plugin.py')):
+                    print('validity check 1 for plugin ' + plugin + ' failed :-( - plugin.py not found.')
                     raise
+                else:
+                    pass
+                    print('validity check 1 for plugin ' + plugin + ' succeeded :-) - plugin.py found')
+                print('now appending plugin ' + plugin + ' to list')
                 self.plugins.append(import_module('wordclock_plugins.' + plugin + '.plugin').plugin(self.config))
                 # Search for default plugin to display the time
+                #if plugin == 'time_as_words_german':
                 if plugin == 'time_default':
+                #if plugin == 'rainbow':
                     print('  Selected "' + plugin + '" as default plugin')
                     self.default_plugin = index
                 print('Imported plugin ' + str(index) + ': "' + plugin + '".')
                 index += 1
             except:
                 print('Failed to import plugin ' + plugin + '!')
+                #raise
 
         # Create object to interact with the wordclock using the interface of your choice
         self.plugin_index = 0
@@ -111,8 +136,8 @@ class wordclock:
         """
 
         try:
-	    print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
-	    self.plugins[self.plugin_index].run(self.wcd, self.wci)
+            print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
+            self.plugins[self.plugin_index].run(self.wcd, self.wci)
         except:
             print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
             self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
@@ -146,20 +171,27 @@ class wordclock:
                     time.sleep(self.wci.lock_time)
                     evt = self.wci.waitForEvent()
                     if evt == self.wci.EVENT_BUTTON_LEFT:
+                        print('button LEFT was pressed (1)')
                         self.plugin_index -= 1
                         if self.plugin_index == -1:
                             self.plugin_index = len(self.plugins) - 1
                         time.sleep(self.wci.lock_time)
                     if evt == self.wci.EVENT_BUTTON_RETURN:
+                        print('button RETURN was pressed (2)')
                         time.sleep(self.wci.lock_time)
                         break
                     if evt == self.wci.EVENT_EXIT_PLUGIN or evt == self.wci.EVENT_NEXT_PLUGIN_REQUESTED:
                         break
                     if evt == self.wci.EVENT_BUTTON_RIGHT:
+                        print('button RIGHT was pressed (3)')
                         self.plugin_index += 1
                         if self.plugin_index == len(self.plugins):
                             self.plugin_index = 0
                         time.sleep(self.wci.lock_time)
+                    if evt == self.wci.EVENT_BUTTON_FOUR:
+                        print('button FOUR was pressed (4)')
+                    if evt == self.wci.EVENT_BUTTON_FIVE:
+                        print('button FIVE was pressed (5)')
 
 
 if __name__ == '__main__':

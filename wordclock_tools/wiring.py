@@ -1,5 +1,6 @@
 import ast
 
+
 class wiring:
     """
     A class, holding all information of the wordclock's layout to map given
@@ -19,7 +20,8 @@ class wiring:
             language = ''.join(config.get('plugin_time_default', 'language'))
         stencil_content = ast.literal_eval(config.get('language_options', language))
         self.WCA_HEIGHT = len(stencil_content)
-        self.WCA_WIDTH = len(stencil_content[0].decode('utf-8'))
+        # py2: self.WCA_WIDTH = len(stencil_content[0].decode('utf-8'))
+        self.WCA_WIDTH = len(stencil_content[0])
         self.LED_COUNT = self.WCA_WIDTH * self.WCA_HEIGHT + 4  # Number of LED pixels.
         self.LED_PIN = 18  # GPIO pin connected to the pixels (must support PWM!).
         self.LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
@@ -55,6 +57,9 @@ class wiring:
             self.wcl = micro_net_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         elif wiring_layout == 'webdisaster_wiring':
             self.wcl = webdisaster_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+        elif wiring_layout == 'patrics_wiring':
+            self.LED_COUNT = self.WCA_WIDTH * self.WCA_HEIGHT + 4
+            self.wcl = patrics_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         else:
             print('Warning: No valid wiring layout found. Falling back to default!')
             self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
@@ -64,7 +69,7 @@ class wiring:
         Linear mapping from top-left to bottom right
         """
         for i in ledCoordinates:
-            self.setColorBy2DCoordinates(strip, i % self.WCA_WIDTH, i / self.WCA_WIDTH, color)
+            self.setColorBy2DCoordinates(strip, i % self.WCA_WIDTH, int(i / self.WCA_WIDTH), color)
 
     def setColorBy2DCoordinates(self, strip, x, y, color):
         """
@@ -128,6 +133,58 @@ class bernds_wiring:
             return self.LED_COUNT - 2
         elif min == 4:
             return 0
+        else:
+            print('WARNING: Out of range, when mapping minutes...')
+            print(min)
+            return 0
+
+
+class patrics_wiring:
+    """
+    A class, holding all information of the wordclock's layout to map given
+    timestamps, 2d-coordinates to the corresponding LEDs (corresponding to
+    the individual wiring/layout of any wordclock).
+    If a different wordclock wiring/layout is chosen, this class needs to be
+    adopted.
+    """
+
+    def __init__(self, WCA_WIDTH, WCA_HEIGHT):
+        self.WCA_WIDTH = WCA_WIDTH
+        self.WCA_HEIGHT = WCA_HEIGHT
+        self.LED_COUNT = self.WCA_WIDTH * self.WCA_HEIGHT + 4
+
+    def getStripIndexFrom2D(self, x, y):
+        """
+        Mapping coordinates to the wordclocks display
+        Needs hardware/wiring dependent implementation
+        Final range:
+             (0,0): top-left
+             (self.WCA_WIDTH-1, self.WCA_HEIGHT-1): bottom-right
+        """
+        pos = int((1 - (y % 2)) * (120 - (y / 2) * 22 - x) + \
+              (y % 2) * ((y % 2) * 99 - ((y - 1) / 2) * 22 + x))
+        #if x % 2 == 0:
+        #    pos = (self.WCA_WIDTH - x - 1) * self.WCA_HEIGHT + y + 2
+        #else:
+        #    pos = (self.WCA_WIDTH - x) * self.WCA_HEIGHT - y + 1
+        return pos
+
+    def mapMinutes(self, min):
+        """
+        Access minutes (1,2,3,4)
+        Needs hardware/wiring dependent implementation
+        This implementation assumes the minutes to be wired as first and last two leds of the led-strip
+        """
+        if min == 1:
+            #return self.LED_COUNT - 1
+            return 121
+        elif min == 2:
+            return 122
+        elif min == 3:
+            #return self.LED_COUNT - 2
+            return 123
+        elif min == 4:
+            return 124
         else:
             print('WARNING: Out of range, when mapping minutes...')
             print(min)

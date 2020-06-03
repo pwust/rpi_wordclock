@@ -37,9 +37,9 @@ class Bitmap(object):
     and any other value indicates that it is `on`.
     """
     def __init__(self, width, height, pixels=None):
-        self.width = width
-        self.height = height
-        self.pixels = pixels or bytearray(width * height)
+        self.width = int(width)
+        self.height = int(height)
+        self.pixels = pixels or bytearray(int(width) * int(height))
 
     def __repr__(self):
         """Return a string representation of the bitmap's pixels."""
@@ -53,7 +53,7 @@ class Bitmap(object):
     def bitblt(self, src, x, y):
         """Copy all pixels from `src` into this bitmap"""
         srcpixel = 0
-        dstpixel = y * self.width + x
+        dstpixel = int(y * self.width + x)
         row_offset = self.width - src.width
 
         for sy in range(src.height):
@@ -102,7 +102,7 @@ class Glyph(object):
 
         # The advance width is given in FreeType's 26.6 fixed point format,
         # which means that the pixel values are multiples of 64.
-        advance_width = slot.advance.x / 64
+        advance_width = int(slot.advance.x / 64)
 
         return Glyph(pixels, width, height, top, advance_width)
 
@@ -193,7 +193,7 @@ class Font(object):
             glyph = self.glyph_for_character(char)
             max_ascent = max(max_ascent, glyph.ascent)
             max_descent = max(max_descent, glyph.descent)
-            kerning_x = self.kerning_offset(previous_char, char)
+            kerning_x = int(self.kerning_offset(previous_char, char))
 
             # With kerning, the advance width may be less than the width of the glyph's bitmap.
             # Make sure we compute the total width so that all of the glyph's pixels
@@ -224,7 +224,7 @@ class Font(object):
 
             # Take kerning information into account before we render the
             # glyph to the output bitmap.
-            x += self.kerning_offset(previous_char, char)
+            x += int(self.kerning_offset(previous_char, char))
 
             # The vertical drawing position should place the glyph
             # on the baseline as intended.

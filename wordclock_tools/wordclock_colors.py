@@ -3,7 +3,10 @@ import math
 try:
     from neopixel import Color
 except:
-    from GTKstrip import Color
+#except (ModuleNotFoundError):
+    from _rpi_ws281x import Color
+    #from library.rpi_ws281x.rpi_ws281x import Color
+    #from wordclock_tools.GTKstrip import Color
 
 # Define colors which are available for the wcd. Currently: Alphabetic order
 BLACK = Color(  0,  0,  0)

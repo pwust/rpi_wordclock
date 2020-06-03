@@ -1,10 +1,10 @@
 # coding: utf8
 
-import gtk
-import gobject
+#import gtk
+#import gobject
 import threading
-from gtk._gtk import FILL
-import pango
+#from gtk._gtk import FILL
+#import pango
 import os
 from wordclock_interfaces import event_handler as weh
 
@@ -97,7 +97,7 @@ class GTKstrip(threading.Thread):
 
     def setBrightness(self, brightness):
         self.brightness = brightness
-        print "Set mock brightness value to " + str(self.brightness)
+        print("Set mock brightness value to " + str(self.brightness))
 
     def update(self):
         for label, color in zip(self.labels, self.colors):

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="pi@10.250.0.167:22 agent">
+    <serverData>
+      <paths name="pi@10.250.0.162:22">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/pi/rpi_wordclock" local="$PROJECT_DIR$" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/venv" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+      <paths name="pi@10.250.0.162:22 agent">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/pi/rpi_wordclock" local="$PROJECT_DIR$" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/venv" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+      <paths name="pi@10.250.0.167:22 agent">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/pi/rpi_wordclock" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>

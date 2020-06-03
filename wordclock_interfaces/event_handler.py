@@ -16,8 +16,12 @@ class event_handler:
     EVENT_BUTTON_RETURN = 2
     EVENT_EXIT_PLUGIN = 3
     EVENT_NEXT_PLUGIN_REQUESTED = 4
+    EVENT_BUTTON_FOUR = 5
+    EVENT_BUTTON_FIVE = 6
 
-    BUTTONS = {'left': EVENT_BUTTON_LEFT, 'right': EVENT_BUTTON_RIGHT, 'return': EVENT_BUTTON_RETURN}
+    BUTTONS = {'left': EVENT_BUTTON_LEFT, 'right': EVENT_BUTTON_RIGHT,
+               'return': EVENT_BUTTON_RETURN, 'four': EVENT_BUTTON_FOUR,
+               'five': EVENT_BUTTON_FIVE}
 
     def __init__(self):
         self.condition = threading.Condition()

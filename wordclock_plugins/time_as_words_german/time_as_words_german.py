@@ -7,35 +7,35 @@ class time_as_words_german():
     def __init__(self):
         self.prefix = "ES IST "
         self.minutes = ["",
-            "FUNF NACH ", \
+            "FÜNF NACH ", \
             "ZEHN NACH ", \
             "VIERTEL NACH ", \
             "ZWANZIG NACH ", \
-            "FUNF VOR HALB ", \
+            "FÜNF VOR HALB ", \
             "HALB ", \
-            "FUNF NACH HALB ", \
+            "FÜNF NACH HALB ", \
             "ZWANZIG VOR ", \
             "VIERTEL VOR ", \
             "ZEHN VOR ", \
-            "FUNF VOR "]
-        self.hours = ["ZWOLF", \
+            "FÜNF VOR "]
+        self.hours = ["ZWÖLF", \
             "EIN", \
             "ZWEI", \
             "DREI", \
             "VIER", \
-            "FUNF", \
+            "FÜNF", \
             "SECHS", \
             "SIEBEN", \
             "ACHT", \
             "NEUN", \
             "ZEHN", \
             "ELF", \
-            "ZWOLF"]
+            "ZWÖLF"]
         self.full_hour_suffix = " UHR"
 
     def get_time(self, time, withPrefix=True):
-        hour=time.hour%12+(1 if time.minute/5 > 4 else 0)
-        minute=time.minute/5
+        hour = time.hour % 12 + (1 if int(time.minute / 5) > 4 else 0)
+        minute = int(time.minute / 5)
         # Assemble string
         return str(
             (self.prefix if withPrefix else "") +

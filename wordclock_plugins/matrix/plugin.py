@@ -35,7 +35,7 @@ class plugin:
         Displays rain until aborted by user interaction on pin button_return
         """
         # initialize rain start: set to end coordinate
-        rain = [20 for _ in range(0, 11)]
+        rain = [20 for _ in range(0, 12)]
         while True:
             # Set background color
             wcd.setColorToAll(self.bg_color, includeMinutes=True)
@@ -47,9 +47,9 @@ class plugin:
                         rain[x] = 0
                 else:
                     # simple alpha blending using our predefined colors
-                    y0 = max(y - 10, 0)
-                    y1 = min(9, y);
-                    ci = y0 - (y - 10);
+                    y0 = max(y - 11, 0)
+                    y1 = min(10, y)
+                    ci = y0 - (y - 10)
                     for yi, yn in enumerate(range(y0, y1 + 1)):
                         color = self.colors[ci + yi]
                         wcd.setColorBy2DCoordinates(wcd.strip, x, yn, color)
