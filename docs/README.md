@@ -11,6 +11,7 @@
 ### ✔️ Features
  * This project is a fork of [bk1285's 2016 project](https://github.com/bk1285/rpi_wordclock) of a word clock.
  * Various language layouts
+     * 10x11 pixel was the original layout, now added 11x11 layout
  * Various plugins to
      * display the current time
      * get information on current temperature, sunrise, sunset, IP-settings, ...
