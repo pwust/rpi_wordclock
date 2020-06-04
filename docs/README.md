@@ -1,5 +1,9 @@
 ## Software to create a Raspberry Pi based wordclock on Python3
 
+<p>
+ <img src="https://github.com/pwust/rpi_wordclock_p3/blob/master/docs/_images/word-clock.jpg">
+</p>
+
 <p align="left">
  <a href="https://github.com/pwust/rpi_wordclock_p3/blob/master/LICENSE" target="_blank"><img alt="Source code license" src="https://img.shields.io/badge/license-GPL--3.0-informational"></a>
 </p>
