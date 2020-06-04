@@ -17,6 +17,7 @@
 ### ⏳ In progress
  * finish porting the plugins to Python3
  * rewriting weather_forcast plugin to reflect available onlilne services
+ * providing docs on the complete hardware setup
 
 ### :books: Further reading
  * [Original project by Bernd Krolla](https://github.com/bk1285/rpi_wordclock/projects)
