@@ -3,7 +3,7 @@
 ### :vertical_traffic_light: Repo status
 
 <p align="left">
- <img alt="Source code license" src="https://img.shields.io/badge/license-GPL--3.0-informational"/>
+ <a href="https://github.com/pwust/rpi_wordclock_p3/blob/master/LICENSE" target="_blank"><img alt="Source code license" src="https://img.shields.io/badge/license-GPL--3.0-informational"></a>
 </p>
 
 ### ✔️ Features
